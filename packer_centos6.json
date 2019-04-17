@@ -1,0 +1,55 @@
+{
+  "builders": [
+    {
+      "name": "cent6",
+      "type": "amazon-ebs",
+      "associate_public_ip_address": "true",
+      "ami_name": "AMIBUILD-CENT6-{{user `COMMITID`}}-{{timestamp}}",
+      "ami_description": "{{user `DESCRIPTION`}}",
+      "instance_type": "{{user `INSTANCE_TYPE`}}",
+      "region": "{{user `AWS_REGION`}}",
+      "source_ami": "{{user `SOURCE_AMI`}}",
+      "vpc_id": "{{user `VPC_ID`}}",
+      "subnet_id": "{{user `SUBNET_ID`}}",
+      "security_group_id": "{{user `SECURITY_GROUP_ID`}}",
+      "ssh_username": "{{user `SSH_USERNAME`}}",
+      "ssh_keypair_name": "{{user `KEY_PAIR_NAME`}}",
+      "ssh_private_key_file": "{{user `PRIVATE_KEY_FILE`}}",
+      "ssh_interface": "{{user `SSH_INTERFACE`}}",
+      "ena_support": true,
+      "launch_block_device_mappings": [
+        {
+          "device_name": "/dev/xvda",
+          "volume_size": "{{user `EBS_VOLUME_SIZE`}}",
+          "volume_type": "gp2",
+          "delete_on_termination": "true"
+        }
+      ],
+      "run_tags": {
+        "Name": "AMIBUILD-CENT6-{{user `COMMITID`}}",
+        "Author": "{{ user `USER_NAME`}}",
+        "Platform": "{{ user `PLATFORM`}}"
+      },
+      "tags": {
+        "Name": "AMIBUILD-CENT6-{{user `COMMITID`}}",
+        "Author": "{{ user `USER_NAME`}}",
+        "Platform": "{{ user `PLATFORM`}}"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "ansible",
+      "user": "{{user `SSH_USERNAME`}}",
+      "playbook_file": "{{user `PLAYBOOK_FILE`}}",
+      "use_sftp": "false",
+      "ansible_env_vars": [
+        "ANSIBLE_HOST_KEY_CHECKING=False"
+      ],
+      "extra_arguments": [
+        "--extra-vars",
+        "--timeout=60"
+      ]
+    }
+  ]
+}
