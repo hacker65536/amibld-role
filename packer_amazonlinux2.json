@@ -17,8 +17,6 @@
       "ssh_private_key_file": "{{user `PRIVATE_KEY_FILE`}}",
       "ssh_interface": "{{user `SSH_INTERFACE`}}",
       "ena_support": true,
-      "ami_users": "{{user `AMI_USERS`}}",
-      "ami_regions": "{{user `AMI_REGIONS`}}",
       "launch_block_device_mappings": [
         {
           "device_name": "/dev/xvda",
